@@ -50,19 +50,18 @@ public class PredicateBuilder<T>
 
     private Expression<Func<T, bool>> GetEquals(PropertyInfo property, string value) =>
         x => property.GetValue(x)!.Equals(value);
-    /**
-     * При спуске по filterPath - удаляется первая часть пути
-     */
-    public Func<T, object> GetPropertyFunc(Func<T, object> oldFunc, string filterPath)
+    
+
+    public Func<T, object?> GetValueByPropertyPath(string filterPath)
+    {
+        var property = _propertyInfos.GetPropertyByName(filterPath.GetFirstNameInPath());
+        return filterPath.Split(".").Length == 1 ? 
+            x => property?.GetValue(x) : 
+            GetValueByPropertyPath(x => property?.GetValue(x), filterPath.RemoveFirstObjectInPath());
+    }
+    
+    private Func<T, object> GetValueByPropertyPath(Func<T, object?> oldFunc, string filterPath)
     {
         
-        return x =>
-        {
-            var currentObject = oldFunc(x);
-            var objectType = currentObject.GetType();
-            var property = objectType.GetProperties().GetPropertyByName(filterPath.GetFirstNameInPath()) ??
-                   throw new ValidationException("Not found property with name: " + filterPath);
-            return property.GetValue(currentObject)!;
-        };
     }
 }
