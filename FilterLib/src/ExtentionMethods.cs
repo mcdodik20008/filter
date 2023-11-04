@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using LinqKit;
 
 namespace FilterLib;
 
@@ -23,17 +24,23 @@ internal static class ExtentionMethods
         return fieldPath.Split(".").Skip(1).JoinString('.');
     }
 
-    internal static string JoinString(this IEnumerable<string> source, char seperator)
+    internal static string JoinString(this IEnumerable<string> source, char separator)
     {
         var builder = new StringBuilder();
         
         foreach (var str in source)
         {
             builder.Append(str);
-            builder.Append(seperator);
+            builder.Append(separator);
         }
 
         builder.Remove(builder.Length - 1, 1);
         return builder.ToString();
+    }
+
+    internal static T ToConsole<T>(this T starter)
+    {
+        Console.WriteLine(starter.ToString());
+        return starter;
     }
 }

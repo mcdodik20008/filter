@@ -15,7 +15,7 @@ public class EqTest
         {
             FieldName = "StrValue",
             Value = "ggg",
-            OperationWithValue = FilterOperationEnum.EQ
+            OperationWithValue = ValueOperationEnum.EQ
         };
         var eqString = JsonConvert.SerializeObject(testFilter);
         var filter = JsonConvert.DeserializeObject<Filter<ObjectForTest>>(eqString);
@@ -23,6 +23,7 @@ public class EqTest
         Assert.IsNotNull(filter);
 
         var expression = _predicateBuilder.GetPredicate(filter).Compile();
+        // анрил дебажить в теории - потому что лямбда на лямбде и лямбдой погоняет..
         var count = TestValues.Where(expression).Count();
 
         Assert.AreEqual(1, count);
@@ -35,7 +36,7 @@ public class EqTest
         {
             FieldName = "StrValue",
             Value = "fff",
-            OperationWithValue = FilterOperationEnum.EQ
+            OperationWithValue = ValueOperationEnum.EQ
         };
         var eqString = JsonConvert.SerializeObject(testFilter);
         var filter = JsonConvert.DeserializeObject<Filter<ObjectForTest>>(eqString);
@@ -59,7 +60,7 @@ public class EqTest
                 {
                     FieldName = "StrValue.InsideStrValue",
                     Value = "kkk",
-                    OperationWithValue = FilterOperationEnum.EQ,
+                    OperationWithValue = ValueOperationEnum.EQ,
                     OperationWithParentFilter = FilterOperationEnum.AND
                 }
             }
@@ -83,7 +84,7 @@ public class EqTest
             StrValue = "ggg",
             IntValue = 4,
             BoolValue = true,
-            Object = new InsideFilterObject()
+           IncludeObject = new InsideFilterObject()
             {
                 InsideStrValue = "kkk",
                 InsideIntValue = 6,
@@ -95,7 +96,7 @@ public class EqTest
             StrValue = "fff",
             IntValue = 4,
             BoolValue = false,
-            Object = new InsideFilterObject()
+            IncludeObject = new InsideFilterObject()
             {
                 InsideStrValue = "ttt",
                 InsideIntValue = 7,
@@ -107,7 +108,7 @@ public class EqTest
             StrValue = "fff",
             IntValue = 5,
             BoolValue = true,
-            Object = new InsideFilterObject()
+            IncludeObject = new InsideFilterObject()
             {
                 InsideStrValue = "ttt",
                 InsideIntValue = 7,

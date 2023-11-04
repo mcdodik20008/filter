@@ -8,6 +8,6 @@ internal class ObjectForTest
     
     public bool BoolValue { get; set; }
     
-    public InsideFilterObject Object { get; set; }
+    public InsideFilterObject IncludeObject { get; set; }
     
 }
